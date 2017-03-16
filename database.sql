@@ -74,7 +74,7 @@ CREATE TABLE `petugas` (
 
 LOCK TABLES `petugas` WRITE;
 /*!40000 ALTER TABLE `petugas` DISABLE KEYS */;
-INSERT INTO `petugas` VALUES ('0000000001','Akbar','Faisal','akbar@gmail.com','1','081XXXXXXXX1',NULL,'1','0','2017-02-22 06:27:00','PRD'),('0000000002','Andrew','Lowa','andre@gmail.com','1','081XXXXXXXX2',NULL,'1','1','2017-02-24 06:25:53','MGR'),('0000000003','Jafar','Pager','jafarpager@gmail.com','1','081XXXXXXXX3',NULL,'1','1','2017-03-16 01:41:28','ADM'),('0000000004','Ken','Kinanti','ken@gmail.com','','080000000004',NULL,'0','0','2017-02-23 09:23:57','SUP');
+INSERT INTO `petugas` VALUES ('0000000001','Akbar','Faisal','pfiestaparfum@gmail.com','1','081XXXXXXXX1',NULL,'1','0','2017-02-22 06:27:00','PRD'),('0000000002','Andrew','Lowa','mfiestaparfum@gmail.com','1','081XXXXXXXX2',NULL,'1','1','2017-02-24 06:25:53','MGR'),('0000000003','Jafar','Pager','jafarpager@gmail.com','1','081XXXXXXXX3',NULL,'1','1','2017-03-16 01:41:28','ADM'),('0000000004','Ken','Kinanti','ken@gmail.com','','080000000004',NULL,'0','0','2017-02-23 09:23:57','SUP');
 /*!40000 ALTER TABLE `petugas` ENABLE KEYS */;
 UNLOCK TABLES;
 

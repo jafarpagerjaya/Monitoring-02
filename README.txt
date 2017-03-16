@@ -1,6 +1,16 @@
 Project 02
 www.facebook.com/jafar.pagerjaya
 
+3 User
+password : 1
+
+#Admin
+email : jafarpager@gmail.com
+#Manajer
+email : mfiestaparfum@gmail.com
+#Produksi 
+email : pfiestaparfum@gmail.com
+
 #Koneksi#
 Nama database default : fiestaparfum_kp
 Nama user default : root
