@@ -187,25 +187,7 @@
 	      $stmt->close();
 	      $db->close(); 
 	    }
-	    /*
-	    public function bacaLaporan(){
-			global $db;
-			$query = "SELECT p.id_peramalan,DATE_FORMAT(p.tgl_peramalan,'%d-%b-%Y') tgl_peramalan,COUNT(dp.kode_bahan) jumlah_bahan,
-						CASE WHEN p.status_pengadaan = 'B' THEN 'Belum Dilakukan' ELSE 'Sudah Dilakukan' END status_pengadaan,
-						DATE_FORMAT(p.terupdate,'%d-%m-%Y | Pukul : %T') terupdate 
-					FROM peramalan p JOIN detil_peramalan dp
-					ON(p.id_peramalan = dp.id_peramalan)
-                	GROUP BY p.id_peramalan";
-			$hasil = $db->query($query);
-			if($hasil->num_rows > 0){
-				return $hasil;
-			}else{
-				return $false;
-			}
-			$stmt->close();
-			$db->close();
-		}
-		*/
+
 	    public static function getDataPeramalanById($id_peramalan){
 	      global $db;
 	      $id_peramalan = $db->real_escape_string($id_peramalan);
@@ -227,7 +209,7 @@
 	    public function bacaDetilLaporanP($id_peramalan){
 	      global $db;
 	      $id_peramalan = $db->real_escape_string($id_peramalan);
-	      $stmt = $db->prepare("SELECT dp.kode_bahan,bm.nama_bahan,bm.stok,dp.jumlah,((dp.jumlah-bm.stok)+bm.stok_aman) total_pengadaan 
+	      $stmt = $db->prepare("SELECT dp.kode_bahan,bm.nama_bahan,bm.stok,dp.jumlah,dp.total_pengadaan 
 	      						FROM bahan_mentah bm JOIN detil_peramalan dp
 	      						ON(bm.kode_bahan = dp.kode_bahan)
 	      						WHERE dp.id_peramalan = ?");
@@ -241,27 +223,10 @@
 	      $stmt->close();
 	      $db->close(); 
 	    }
-	    /*
-	    public function bacaDetilLaporanP($id_peramalan){
-	      global $db;
-	      $id_peramalan = $db->real_escape_string($id_peramalan);
-	      $query = "SELECT dp.kode_bahan,bm.nama_bahan,bm.stok,dp.jumlah,((dp.jumlah-bm.stok)+bm.stok_aman) total_pengadaan 
-					FROM bahan_mentah bm JOIN detil_peramalan dp
-					ON(bm.kode_bahan = dp.kode_bahan)
-					WHERE dp.id_peramalan = '$id_peramalan'";
-	      $hasil = $db->query($query);
-	      if($hasil->num_rows > 0){
-	        return $hasil;
-	      }else{
-	        return false;
-	      }
-	      $hasil->free();
-	      $db->close();
-	    }
-		*/
+
 	    public function bacaDetilPeramalan(){
 	      global $db;
-	      $stmt = $db->prepare("SELECT bm.kode_bahan,bm.nama_bahan,bm.stok,dp.jumlah,((dp.jumlah-bm.stok)+bm.stok_aman) total_pengadaan
+	      $stmt = $db->prepare("SELECT bm.kode_bahan,bm.nama_bahan,bm.stok,dp.jumlah,dp.total_pengadaan
 	      						FROM bahan_mentah bm JOIN detil_peramalan dp
 	      						ON(bm.kode_bahan = dp.kode_bahan)
 	      						WHERE dp.id_peramalan = (SELECT id_peramalan
@@ -276,25 +241,7 @@
 	      $stmt->close();
 	      $db->close(); 
 	    }
-	    /*
-	    public function bacaDetilPeramalan(){
-	      global $db;
-	      $query = "SELECT bm.kode_bahan,bm.nama_bahan,bm.stok,dp.jumlah,((dp.jumlah-bm.stok)+bm.stok_aman) total_pengadaan
-					FROM bahan_mentah bm JOIN detil_peramalan dp
-					ON(bm.kode_bahan = dp.kode_bahan)
-					WHERE dp.id_peramalan = (SELECT id_peramalan
-											 FROM peramalan
-											 WHERE status_pengadaan = 'B')";
-	      $hasil = $db->query($query);
-	      if($hasil->num_rows > 0){
-	        return $hasil;
-	      }else{
-	        return false;
-	      }
-	      $hasil->free();
-	      $db->close();
-	    }
-		*/
+
 	    public function ubahStatusPengadaan($id_peramalan){
 	      global $db;
 	      $id_peramalan = $db->real_escape_string($id_peramalan);
@@ -318,9 +265,7 @@
 	      						ON(bm.kode_bahan = dp.kode_bahan)
                                 JOIN peramalan p
                                 ON(dp.id_peramalan = p.id_peramalan)
-	      						WHERE dp.id_peramalan = (SELECT id_peramalan
-	      												 FROM peramalan
-	      												 WHERE status_pengadaan = 'S')
+	      						WHERE p.status_pengadaan = 'S'
 	      					   ");
 	      $stmt->execute();
 	      if(!$stmt){
@@ -331,27 +276,7 @@
 	      $stmt->close();
 	      $db->close(); 
 	    }
-	    /*
-	    public function getHistoryPeramalan(){
-	      global $db;
-	      $query = "SELECT bm.kode_bahan,bm.nama_bahan,dp.jumlah jumlah_peramalan,((dp.jumlah-bm.stok)+bm.stok_aman) jumlah_pengadaan,DATE_FORMAT(p.tgl_peramalan,'%b %Y') periode
-					FROM bahan_mentah bm JOIN detil_peramalan dp
-					ON(bm.kode_bahan = dp.kode_bahan)
-                	JOIN peramalan p
-                	ON(dp.id_peramalan = p.id_peramalan)
-					WHERE dp.id_peramalan = (SELECT id_peramalan
-											 FROM peramalan
-											 WHERE status_pengadaan = 'S')";
-	      $hasil = $db->query($query);
-	      if($hasil->num_rows > 0){
-	        return $hasil;
-	      }else{
-	        return false;
-	      }
-	      $hasil->free();
-	      $db->close();
-	    }
-		*/
+
 	    public static function getRingkasanRamal(){
 	      global $db;
 	      $query = "SELECT COUNT(*) jml_ramal_bs
