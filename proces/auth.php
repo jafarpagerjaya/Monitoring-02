@@ -38,18 +38,24 @@
     include '../class/akun.php';
     include 'lib.php';
     $akun = new Akun();
-    if($akun->cekAktifAkun($_GET['nip'],setPesanAktive($_GET['aksi']))==FALSE){
+    if($akun->cekAktifAkun($_GET['nip'],setPesanAktive($_GET['aksi']))==FALSE){ // cekAktifAkun = cek nip lg on adalah diri sendiri == [FALSE]
       header ('location:../pages/view/akun.php');
-    }else{
-      if(setIdAktive($_GET['aksi'])=='0'){
+    }else{ // nip lg on/off bukan diri sendiri == [TRUE]
+      // $_GET['aksi'] == setAksiAkun()
+      // parsing setAksiAkun() dilakukan di view/akun.php
+      // setAksiAkun(NULL) == 'membuka'
+      // setAksiAkun(1) == 'menutup'
+      // setAksiAkun(0) == 'mengaktifkan'
+      if(setIdAktive($_GET['aksi'])=='0'){ // setIdAktive(membuka) == 0
         $pSementara = randSting();
-        $akun->setBlokAkun($_GET['nip'],$pSementara);
+        $akun->setBlokAkun($_GET['nip'],$pSementara); // set Pass sementara saat terblock
         $power = $akun->setAktif($_GET['nip'],setIdAktive($_GET['aksi']));
         $kReAktivasi = strrev($_GET['nip']).''.$_GET['nip'];
         $akun->setKodeReAktivasi($_GET['nip'],$kReAktivasi);
-        kirimEmailReAktivasiAkun($_GET['email'],$pSementara,$kReAktivasi);
+        $hasil = kirimEmailReAktivasiAkun($_GET['email'],$pSementara,$kReAktivasi);
+        // $_SESSION['kirimEmailReAktivasiAkun'] = $hasil.' Pass >> '.$pSementara.' KodeReAk >> '.$kReAktivasi;
       }else{
-        $power = $akun->setAktif($_GET['nip'],setIdAktive($_GET['aksi']));
+        $power = $akun->setAktif($_GET['nip'],setIdAktive($_GET['aksi'])); // setIdAktive(menutup) == NULL OR setIdAktive(mengaktifkan) == 1
       }
       if($power==TRUE){
           $_SESSION['pesan'] = 'Akun NIP '.$_GET['nip'].' telah resmi di'.setPesanAktive($_GET['aksi']);
@@ -70,7 +76,8 @@
     }else{
       $pSementara = randSting();
       if(($ilp->ubahPasswordSementara($email,$pSementara))==TRUE){
-        kirimEmailLupaPassword($email,$pSementara);
+        $hasil = kirimEmailLupaPassword($email,$pSementara);
+        // $_SESSION['kirimEmailLupaPassword'] = $hasil. ' Pass >> '.$pSementara;
         $_SESSION['pesan'] = 'Password sementara telah dikirim ke email anda, silahkan cek email.';
         header ('location:../index.php');
       }else{

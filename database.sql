@@ -20,6 +20,65 @@ USE fiestaparfum_kp;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `level_akses`
+--
+
+DROP TABLE IF EXISTS `level_akses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `level_akses` (
+  `kode_la` char(5) NOT NULL,
+  `nama_la` varchar(15) NOT NULL,
+  PRIMARY KEY (`kode_la`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `level_akses`
+--
+
+LOCK TABLES `level_akses` WRITE;
+/*!40000 ALTER TABLE `level_akses` DISABLE KEYS */;
+INSERT INTO `level_akses` VALUES ('ADM','Admin'),('MGR','Manajer'),('PRD','Produksi'),('SUP','Suplaier');
+/*!40000 ALTER TABLE `level_akses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `petugas`
+--
+
+DROP TABLE IF EXISTS `petugas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `petugas` (
+  `nip` varchar(10) NOT NULL,
+  `nama_depan` varchar(10) NOT NULL,
+  `nama_belakang` varchar(30) DEFAULT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `kontak` varchar(12) NOT NULL,
+  `kode_aktivasi` varchar(255) DEFAULT NULL,
+  `aktif` char(1) NOT NULL DEFAULT '0',
+  `online` char(1) NOT NULL DEFAULT '0',
+  `terupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `kode_la` char(5) DEFAULT NULL,
+  PRIMARY KEY (`nip`),
+  KEY `fk_kode_la_odn` (`kode_la`),
+  CONSTRAINT `fk_kode_la_odn` FOREIGN KEY (`kode_la`) REFERENCES `level_akses` (`kode_la`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `petugas`
+--
+
+LOCK TABLES `petugas` WRITE;
+/*!40000 ALTER TABLE `petugas` DISABLE KEYS */;
+INSERT INTO `petugas` VALUES ('0000000001','Akbar','Faisal','pfiestaparfum@gmail.com','c4ca4238a0b923820dcc509a6f75849b','081XXXXXXXX1',NULL,'1','0','2017-03-16 17:43:59','PRD'),('0000000002','Andrew','Lowa','mfiestaparfum@gmail.com','c4ca4238a0b923820dcc509a6f75849b','081XXXXXXXX2',NULL,'1','0','2017-03-16 17:44:36','MGR'),('0000000003','Jafar','Pager','jafarpager@gmail.com','c4ca4238a0b923820dcc509a6f75849b','081XXXXXXXX3',NULL,'1','0','2017-03-16 17:44:51','ADM'),('0000000004','Ken','Kinanti','sfiestaparfum@gmail.com','','080000000004',NULL,'0','0','2017-02-23 09:23:57','SUP');
+/*!40000 ALTER TABLE `petugas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `bahan_mentah`
 --
 
@@ -151,65 +210,6 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-
---
--- Table structure for table `level_akses`
---
-
-DROP TABLE IF EXISTS `level_akses`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `level_akses` (
-  `kode_la` char(5) NOT NULL,
-  `nama_la` varchar(15) NOT NULL,
-  PRIMARY KEY (`kode_la`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `level_akses`
---
-
-LOCK TABLES `level_akses` WRITE;
-/*!40000 ALTER TABLE `level_akses` DISABLE KEYS */;
-INSERT INTO `level_akses` VALUES ('ADM','Admin'),('MGR','Manajer'),('PRD','Produksi'),('SUP','Suplaier');
-/*!40000 ALTER TABLE `level_akses` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `petugas`
---
-
-DROP TABLE IF EXISTS `petugas`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `petugas` (
-  `nip` varchar(10) NOT NULL,
-  `nama_depan` varchar(10) NOT NULL,
-  `nama_belakang` varchar(30) DEFAULT NULL,
-  `email` varchar(50) NOT NULL,
-  `password` varchar(30) NOT NULL,
-  `kontak` varchar(12) NOT NULL,
-  `kode_aktivasi` varchar(255) DEFAULT NULL,
-  `aktif` char(1) NOT NULL DEFAULT '0',
-  `online` char(1) NOT NULL DEFAULT '0',
-  `terupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `kode_la` char(5) DEFAULT NULL,
-  PRIMARY KEY (`nip`),
-  KEY `fk_kode_la_odn` (`kode_la`),
-  CONSTRAINT `fk_kode_la_odn` FOREIGN KEY (`kode_la`) REFERENCES `level_akses` (`kode_la`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `petugas`
---
-
-LOCK TABLES `petugas` WRITE;
-/*!40000 ALTER TABLE `petugas` DISABLE KEYS */;
-INSERT INTO `petugas` VALUES ('0000000001','Akbar','Faisal','pfiestaparfum@gmail.com','1','081XXXXXXXX1',NULL,'1','0','2017-03-16 12:09:28','PRD'),('0000000002','Andrew','Lowa','mfiestaparfum@gmail.com','1','081XXXXXXXX2',NULL,'1','0','2017-03-16 12:11:40','MGR'),('0000000003','Jafar','Pager','jafarpager@gmail.com','1','081XXXXXXXX3',NULL,'1','1','2017-03-16 12:24:18','ADM'),('0000000004','Ken','Kinanti','ken@gmail.com','','080000000004',NULL,'0','0','2017-02-23 09:23:57','SUP');
-/*!40000 ALTER TABLE `petugas` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `peramalan`
@@ -391,9 +391,9 @@ DELIMITER ;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = cp850 */ ;
-/*!50003 SET character_set_results = cp850 */ ;
-/*!50003 SET collation_connection  = cp850_general_ci */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -402,11 +402,11 @@ BEGIN
   DECLARE pcpetugas INT(1);
   DECLARE ptnama_depan VARCHAR(10);
   DECLARE ptaktif CHAR(1);
-    SELECT COUNT(*) INTO pcpetugas FROM petugas WHERE (email = pemail) AND (password = ppassword);
+    SELECT COUNT(*) INTO pcpetugas FROM petugas WHERE (email = pemail) AND (password = MD5(ppassword));
     IF (pcpetugas=1) THEN
       SELECT nip, nama_depan, kode_la, aktif INTO pnip, ptnama_depan, pkode_la, ptaktif
       FROM petugas 
-      WHERE (LOWER(email) = LOWER(pemail)) AND (password = ppassword);
+      WHERE (LOWER(email) = LOWER(pemail)) AND (password = MD5(ppassword));
       IF (ptaktif = '1') THEN
 	SET pprivilege = 'TRUE';
         SET ppesan = CONCAT_WS(' ','Hi,',ptnama_depan,'selamat datang');
@@ -419,7 +419,7 @@ BEGIN
 	IF (ptaktif = '0') THEN
           SET ppesan = 'Akun anda belum diaktivasi, mohon aktivasi terlebih dahulu';
 	ELSE
-	  SET ppesan = 'Akun anda belum untuk sementara tidak dapat digunakan, silahkan hubungi staff admin terlebih dahulu';
+	  SET ppesan = 'Akun anda untuk sementara tidak dapat digunakan, silahkan hubungi staff admin terlebih dahulu';
 	END IF;
       END IF;
     ELSE
@@ -436,9 +436,9 @@ DELIMITER ;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = cp850 */ ;
-/*!50003 SET character_set_results = cp850 */ ;
-/*!50003 SET collation_connection  = cp850_general_ci */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -460,7 +460,7 @@ BEGIN
           SET ppesan = 'Password & Retype Password belum cocok';
         ELSE
           UPDATE petugas
-          SET password = TRIM(ppassword), kode_aktivasi = TRIM(CONCAT(REVERSE(pnip),ppassword,pnip))
+          SET password = MD5(TRIM(ppassword)), kode_aktivasi = TRIM(CONCAT(REVERSE(pnip),ppassword,pnip))
           WHERE nip = pnip;
           SET pkode_aktivasi = TRIM(CONCAT(REVERSE(pnip),ppassword,pnip));
           SET ppesan = 'Akun anda berhasil dibuat. Link aktivasi akun telah dikirim ke email anda, lanjutkan aktivasi agar akun dapat digunakan';
@@ -789,4 +789,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-16 19:26:43
+-- Dump completed on 2017-03-17  0:46:31

@@ -98,7 +98,7 @@
 			global $db;
 			$nip = $db->real_escape_string($nip);
 			$pS = $db->real_escape_string($pS);
-	        $stmt = $db->prepare("UPDATE petugas SET password = ? WHERE nip = ?");
+	        $stmt = $db->prepare("UPDATE petugas SET password = MD5(?) WHERE nip = ?");
 	        $stmt->bind_param('ss', $pS,$nip);
 	        $stmt->execute();
 	        if($stmt->affected_rows!=0){
@@ -144,10 +144,10 @@
 
 		public function cekAktifAkun($pk,$aksi){
 	      if($pk==$_SESSION['nip']){
-	        $_SESSION['pesan'] = 'NIP <label class="text-primary">'.$pk.'</label> Untuk saat ini tidak bisa di'.$aksi;
+	        $_SESSION['pesan'] = 'NIP <label class="text-primary">'.$pk.'</label> Untuk saat ini tidak bisa '.$aksi;
 	        return FALSE;
 	      }else{
-	        $_SESSION['pesan'] = '<label class="text-primary">'.$pk.'</label> Berhasil di'.$aksi;
+	        $_SESSION['pesan'] = '<label class="text-primary">'.$pk.'</label> Berhasil '.$aksi;
 	        return TRUE;
 	      }
 	    }
@@ -197,7 +197,7 @@
 	      global $db;
 		  $email 	= $db->real_escape_string($email);
 		  $password = $db->real_escape_string($password);
-          $stmt = $db->prepare("UPDATE petugas SET password = ? WHERE email = ?");
+          $stmt = $db->prepare("UPDATE petugas SET password = MD5(?) WHERE email = ?");
           $stmt->bind_param('ss', $password,$email);
           $stmt->execute();
           if($stmt->affected_rows!=0){

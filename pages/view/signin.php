@@ -79,6 +79,10 @@
                 <?php
                     echo $_SESSION['pesan'];
                     unset($_SESSION['pesan']);
+                    // if (isset($_SESSION['kirimEmailLupaPassword'])) { // return hasil lupa pass kirim ke email {
+                    //   echo '<br>'.$_SESSION['kirimEmailLupaPassword'];
+                    //   unset($_SESSION['kirimEmailLupaPassword']);
+                    // }
                 ?>
               </div>
             </div>

@@ -3,6 +3,7 @@ require '../../proces/koneksi.php';
 if(($_SESSION['privilege']==TRUE) AND ($_SESSION['kode_la']=='MGR') OR ($_SESSION['kode_la']=='ADM')){
 require '../../class/pegawai.php';
 include '../../class/akun.php';
+require '../../class/percakapan.php';
 require '../../proces/lib.php';
 $nip = $_SESSION['nip'];
 $emp = Pegawai::getDetilPegawai($nip);
@@ -33,6 +34,24 @@ $akun = 'active';
     <style type="text/css">.label-buatan{border:1px;padding:7px 11px 8px;font-size:12px}</style>
     <!-- DATA TABES -->
     <link href="../../asset/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet">
+
+    <style>
+    .chat-box{
+      display: none;
+      position: fixed;
+      background: white;
+      right: 95px;
+      bottom: 0px;
+      height: auto;
+      width: 280px;
+      border: 1px solid #ececec;
+      z-index: 2;
+    }
+    .box-direct-h{
+      padding: 15px 10px;
+      cursor: pointer;
+    }
+    </style>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -102,7 +121,21 @@ $akun = 'active';
                           </span>
                           <p style="display: none"><?php echo $aktif;?></p>
                         </td>
-                        <td><span class="<?php echo classAkun(inputFilter($hasil['online'])); ?>"></span> <?php echo statusAkun(inputFilter($hasil['online']));?></td>
+                        <td>
+                        <?php if($hasil['nip']!=$_SESSION['nip']){ ?>
+                          <a href="javascript:;"
+                            data-toggle="tooltip" 
+                            data-original-title="Klik untuk chat" 
+                            data-placement="left" 
+                            class="popup-chatbox"
+                            data-id="<?php echo $hasil['nip']; ?>"
+                            data-nla="<?php echo $hasil['nama_la']; ?>">
+                        <?php } ?>
+                            <span class="<?php echo classAkun(inputFilter($hasil['online'])); ?>"></span> <?php echo statusAkun(inputFilter($hasil['online']));?>
+                        <?php if($hasil['nip']!=$_SESSION['nip']){ ?> 
+                          </a> 
+                        <?php } ?>
+                        </td>
                         <td>
                           <span class="timeago" title="<?php echo date("c", strtotime(inputFilter($hasil['terupdate']))); ?>"></span>
                         </td>
@@ -147,8 +180,38 @@ $akun = 'active';
           </div>
 
         </section><!-- /.content -->
+
+        <div class="chat-box">
+          <div class="box box-primary direct-chat direct-chat-primary no-margin">
+            <div class="box-header with-border box-direct-h" style="padding: 15px 10px;">
+              <h3 class="box-title nla"></h3>
+              <div class="box-tools pull-right" style="top: 10px;">
+                <button class="btn btn-box-tool remove-popup"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <div class="box-direct-bf">
+            <div class="box-body">
+              <!-- Conversations are loaded here -->
+              <div class="direct-chat-messages">
+                <div id="show_message">
+                  
+                </div>
+              </div>
+              <!-- End Conversations -->
+            </div>
+            <div class="box-footer no-padding">
+              <form action="#" method="POST">
+                <div class="form-group">
+                  <textarea id="message" name="pesan" class="form-control" rows="3" placeholder="Ketik text ..."></textarea>
+                </div>
+              </form>
+            </div>
+            </div>
+          </div>
+        </div>
       </div><!-- /.content-wrapper -->
     <?php include_once '../footer.php'; ?>
+    <?php include_once '../control-sidebar.php'; ?>
     </div><!-- ./wrapper -->
 
   <!-- REQUIRED JS SCRIPTS -->
@@ -168,6 +231,52 @@ $akun = 'active';
       $("#akun").dataTable();
       // Input Mask
       $("#myModal").modal("show");
+      // Chat
+      $(".popup-chatbox").on("click", function (event) {
+        var nip = $(this).data('id');
+        var nla = $(this).data('nla');
+        $.ajax({
+          url: '../../proces/p-chat.php',
+          type: 'post',
+          async: false,
+          data: { "tampil" : 1,
+                  "nip" : nip
+                },
+          success: function(data){
+            $('#show_message').html(data);
+          }
+        });
+        $(".chat-box").css("display", "block");
+        $(".box-direct-bf").show();
+        $(".nla").html(nla);
+        $('.direct-chat-messages').scrollTop($('.direct-chat-messages')[0].scrollHeight);
+
+        $("#message").keypress(function (e) {
+          if (e.keyCode == 13) {
+            var msg = $(this).val();
+            msg = msg.trim();
+            $.ajax({
+              url: '../../proces/p-chat.php',
+              type: 'post',
+              async: false,
+              data: { "nip" : nip,
+                      "msg" : msg
+                    },
+              success: function(data){
+                $("#message").val("");
+                e.preventDefault();
+              }
+            });
+          }
+        });
+      });
+      $(".box-direct-h").on("click", function (event) {
+        $(".box-direct-bf").slideToggle("fast");
+      });
+      $(".remove-popup").on("click", function (event) {
+        var nip = $(this).data('id');
+        $(".chat-box").css("display", "none");
+      });
     });
     jQuery(document).ready(function() {    
       $(".timeago").timeago();
@@ -206,6 +315,10 @@ $akun = 'active';
             <?php
                 echo $_SESSION['pesan'];
                 unset($_SESSION['pesan']);
+                if (isset($_SESSION['kirimEmailReAktivasiAkun'])) { // return hasil reak kirim ke email {
+                  echo '<br>'.$_SESSION['kirimEmailReAktivasiAkun'];
+                  unset($_SESSION['kirimEmailReAktivasiAkun']);
+                }
             ?>
           </div>
         </div>
