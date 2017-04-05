@@ -20,10 +20,14 @@ Lokasi file : proces/koneksi.php
 #Koneksi#
 #Backup/Restore#
 Backup database menggunakan mysqldump.exe 
-Sesuaikan DB name,User,Host, Pass User dan direktori mysqldump dengan tempat mysql yang teristall di komputer.
+--Sesuaikan DB name,User,Host, Pass User dan direktori mysqldump dengan tempat mysql yang teristall di komputer.--
 Default dir mysqldump : "C:/"
 Default User,Pass User,Host : --user=root --password= --host=localhost 
 Lokasi file : class/data.php
+--Sesuaikan Lokasi Upload URL Restore http://.../proces/data.php--
+Lokasi File : pages/admin/dashboard.php
+Line : 333
+Default URL : http://localhost:81/Monitoring/proces/data.php
 #Backup/Restore#
 #SQL#
 File database name : database.sql
