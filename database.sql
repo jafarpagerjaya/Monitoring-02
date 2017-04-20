@@ -20,65 +20,6 @@ USE fiestaparfum_kp;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `level_akses`
---
-
-DROP TABLE IF EXISTS `level_akses`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `level_akses` (
-  `kode_la` char(5) NOT NULL,
-  `nama_la` varchar(15) NOT NULL,
-  PRIMARY KEY (`kode_la`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `level_akses`
---
-
-LOCK TABLES `level_akses` WRITE;
-/*!40000 ALTER TABLE `level_akses` DISABLE KEYS */;
-INSERT INTO `level_akses` VALUES ('ADM','Admin'),('MGR','Manajer'),('PRD','Produksi'),('SUP','Suplaier');
-/*!40000 ALTER TABLE `level_akses` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `petugas`
---
-
-DROP TABLE IF EXISTS `petugas`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `petugas` (
-  `nip` varchar(10) NOT NULL,
-  `nama_depan` varchar(10) NOT NULL,
-  `nama_belakang` varchar(30) DEFAULT NULL,
-  `email` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `kontak` varchar(12) NOT NULL,
-  `kode_aktivasi` varchar(255) DEFAULT NULL,
-  `aktif` char(1) NOT NULL DEFAULT '0',
-  `online` char(1) NOT NULL DEFAULT '0',
-  `terupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `kode_la` char(5) DEFAULT NULL,
-  PRIMARY KEY (`nip`),
-  KEY `fk_kode_la_odn` (`kode_la`),
-  CONSTRAINT `fk_kode_la_odn` FOREIGN KEY (`kode_la`) REFERENCES `level_akses` (`kode_la`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `petugas`
---
-
-LOCK TABLES `petugas` WRITE;
-/*!40000 ALTER TABLE `petugas` DISABLE KEYS */;
-INSERT INTO `petugas` VALUES ('0000000001','Akbar','Faisal','pfiestaparfum@gmail.com','c4ca4238a0b923820dcc509a6f75849b','081XXXXXXXX1',NULL,'1','0','2017-03-16 17:43:59','PRD'),('0000000002','Andrew','Lowa','mfiestaparfum@gmail.com','c4ca4238a0b923820dcc509a6f75849b','081XXXXXXXX2',NULL,'1','0','2017-03-16 17:44:36','MGR'),('0000000003','Jafar','Pager','jafarpager@gmail.com','c4ca4238a0b923820dcc509a6f75849b','081XXXXXXXX3',NULL,'1','0','2017-03-16 17:44:51','ADM'),('0000000004','Ken','Kinanti','sfiestaparfum@gmail.com','','080000000004',NULL,'0','0','2017-02-23 09:23:57','SUP');
-/*!40000 ALTER TABLE `petugas` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `bahan_mentah`
 --
 
@@ -102,7 +43,7 @@ CREATE TABLE `bahan_mentah` (
 
 LOCK TABLES `bahan_mentah` WRITE;
 /*!40000 ALTER TABLE `bahan_mentah` DISABLE KEYS */;
-INSERT INTO `bahan_mentah` VALUES ('AK100','Alkohol',15000,20,30,'2017-03-16 12:07:14'),('ET100','Ethanol',14500,23,9,'2017-03-16 12:08:46'),('GT001','Green Tea',300000,1,2,'2017-03-16 11:53:05');
+INSERT INTO `bahan_mentah` VALUES ('AK100','Alkohol',15000,324,13,'2017-04-20 13:48:52'),('ET100','Ethanol',14500,239,9,'2017-04-20 13:49:38'),('GT001','Green Tea',300000,26,2,'2017-04-20 13:50:15');
 /*!40000 ALTER TABLE `bahan_mentah` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -148,7 +89,7 @@ CREATE TABLE `transaksi_bahan` (
   KEY `fk_tb_id_laporan_odn` (`id_laporan`),
   CONSTRAINT `fk_tb_id_laporan_odn` FOREIGN KEY (`id_laporan`) REFERENCES `laporan` (`id_laporan`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_tb_kode_bahan_odn` FOREIGN KEY (`kode_bahan`) REFERENCES `bahan_mentah` (`kode_bahan`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -157,7 +98,7 @@ CREATE TABLE `transaksi_bahan` (
 
 LOCK TABLES `transaksi_bahan` WRITE;
 /*!40000 ALTER TABLE `transaksi_bahan` DISABLE KEYS */;
-INSERT INTO `transaksi_bahan` VALUES (1,'AK100',NULL,'M',270,270,'2015-12-01'),(2,'AK100',NULL,'K',230,40,'2015-12-29'),(3,'AK100',NULL,'M',300,340,'2016-01-01'),(4,'AK100',NULL,'K',280,60,'2016-01-28'),(5,'AK100',NULL,'M',280,340,'2016-02-01'),(6,'AK100',NULL,'K',300,40,'2016-02-28'),(7,'AK100',NULL,'M',300,340,'2016-03-01'),(8,'AK100',NULL,'K',290,50,'2016-03-28'),(9,'AK100',NULL,'M',290,340,'2016-04-01'),(10,'AK100',NULL,'K',330,10,'2016-04-28'),(11,'AK100',NULL,'M',330,340,'2016-05-01'),(12,'AK100',NULL,'K',280,60,'2016-05-28'),(13,'AK100',NULL,'M',250,310,'2016-06-01'),(14,'AK100',NULL,'K',280,30,'2016-06-28'),(15,'AK100',NULL,'M',300,330,'2016-07-01'),(16,'AK100',NULL,'K',290,40,'2016-07-28'),(17,'ET100',NULL,'M',200,200,'2015-12-01'),(18,'ET100',NULL,'K',170,30,'2015-12-29'),(19,'ET100',NULL,'M',190,220,'2016-01-01'),(20,'ET100',NULL,'K',170,50,'2016-01-28'),(21,'ET100',NULL,'M',170,220,'2016-02-01'),(22,'ET100',NULL,'K',185,25,'2016-02-28'),(23,'ET100',NULL,'M',180,205,'2016-03-01'),(24,'ET100',NULL,'K',195,10,'2016-03-28'),(25,'ET100',NULL,'M',290,300,'2016-04-01'),(26,'ET100',NULL,'K',280,20,'2016-04-28'),(27,'ET100',NULL,'M',330,350,'2016-05-01'),(28,'ET100',NULL,'K',310,40,'2016-05-28'),(29,'ET100',NULL,'M',220,260,'2016-06-01'),(30,'ET100',NULL,'K',230,30,'2016-06-28'),(31,'ET100',NULL,'M',220,250,'2016-07-01'),(32,'ET100',NULL,'K',235,25,'2016-07-28'),(33,'GT001',NULL,'M',20,20,'2015-12-01'),(34,'GT001',NULL,'K',15,5,'2015-12-29'),(35,'GT001',NULL,'M',17,22,'2016-01-01'),(36,'GT001',NULL,'K',18,4,'2016-01-28'),(37,'GT001',NULL,'M',18,22,'2016-02-01'),(38,'GT001',NULL,'K',20,2,'2016-02-28'),(39,'GT001',NULL,'M',22,24,'2016-03-01'),(40,'GT001',NULL,'K',18,6,'2016-03-28'),(41,'GT001',NULL,'M',19,25,'2016-04-01'),(42,'GT001',NULL,'K',22,3,'2016-04-28'),(43,'GT001',NULL,'M',23,26,'2016-05-01'),(44,'GT001',NULL,'K',24,2,'2016-05-28'),(45,'GT001',NULL,'M',20,22,'2016-06-01'),(46,'GT001',NULL,'K',20,2,'2016-06-28'),(47,'GT001',NULL,'M',24,26,'2016-07-01'),(48,'GT001',NULL,'K',22,4,'2016-07-28'),(49,'AK100',NULL,'M',290,330,'2016-08-01'),(50,'AK100',NULL,'K',290,40,'2016-08-28'),(51,'AK100',NULL,'M',280,320,'2016-09-01'),(52,'AK100',NULL,'K',300,20,'2016-09-28'),(53,'AK100',0004,'M',320,340,'2016-10-01'),(54,'AK100',0004,'K',295,45,'2016-10-28'),(55,'AK100',0003,'M',300,345,'2016-11-01'),(56,'AK100',0003,'K',285,60,'2016-11-28'),(57,'AK100',0002,'M',280,340,'2016-12-01'),(58,'AK100',0002,'K',310,30,'2016-12-28'),(59,'AK100',0001,'M',320,350,'2017-01-01'),(60,'AK100',0001,'K',320,30,'2017-01-28'),(61,'ET100',NULL,'M',210,235,'2016-08-01'),(62,'ET100',NULL,'K',230,5,'2016-08-28'),(63,'ET100',NULL,'M',240,245,'2016-09-01'),(64,'ET100',NULL,'K',230,15,'2016-09-28'),(65,'ET100',0004,'M',240,255,'2016-10-01'),(66,'ET100',0004,'K',225,30,'2016-10-28'),(67,'ET100',0003,'M',220,250,'2016-11-01'),(68,'ET100',0003,'K',230,20,'2016-11-28'),(69,'ET100',0002,'M',230,250,'2016-12-01'),(70,'ET100',0002,'K',235,15,'2016-12-28'),(71,'ET100',0001,'M',250,265,'2017-01-01'),(72,'ET100',0001,'K',240,25,'2017-01-28'),(73,'GT001',NULL,'M',24,28,'2016-08-01'),(74,'GT001',NULL,'K',22,6,'2016-08-28'),(75,'GT001',NULL,'M',20,26,'2016-09-01'),(76,'GT001',NULL,'K',21,5,'2016-09-28'),(77,'GT001',0004,'M',20,25,'2016-10-01'),(78,'GT001',0004,'K',20,5,'2016-10-28'),(79,'GT001',0003,'M',20,25,'2016-11-01'),(80,'GT001',0003,'K',22,3,'2016-11-28'),(81,'GT001',0002,'M',23,26,'2016-12-01'),(82,'GT001',0002,'K',23,3,'2016-12-28'),(83,'GT001',0001,'M',25,28,'2017-01-01'),(84,'GT001',0001,'K',24,4,'2017-01-28'),(85,'AK100',NULL,'M',309,339,'2017-02-01'),(86,'AK100',NULL,'K',319,20,'2017-02-28'),(87,'ET100',NULL,'M',223,248,'2017-02-01'),(88,'ET100',NULL,'K',225,23,'2017-02-28'),(89,'GT001',NULL,'M',22,26,'2017-02-01'),(90,'GT001',NULL,'K',25,1,'2017-02-28');
+INSERT INTO `transaksi_bahan` VALUES (1,'AK100',NULL,'M',270,270,'2015-12-01'),(2,'AK100',NULL,'K',230,40,'2015-12-29'),(3,'AK100',NULL,'M',300,340,'2016-01-01'),(4,'AK100',NULL,'K',280,60,'2016-01-28'),(5,'AK100',NULL,'M',280,340,'2016-02-01'),(6,'AK100',NULL,'K',300,40,'2016-02-28'),(7,'AK100',NULL,'M',300,340,'2016-03-01'),(8,'AK100',NULL,'K',290,50,'2016-03-28'),(9,'AK100',NULL,'M',290,340,'2016-04-01'),(10,'AK100',NULL,'K',330,10,'2016-04-28'),(11,'AK100',NULL,'M',330,340,'2016-05-01'),(12,'AK100',NULL,'K',280,60,'2016-05-28'),(13,'AK100',NULL,'M',250,310,'2016-06-01'),(14,'AK100',NULL,'K',280,30,'2016-06-28'),(15,'AK100',NULL,'M',300,330,'2016-07-01'),(16,'AK100',NULL,'K',290,40,'2016-07-28'),(17,'ET100',NULL,'M',200,200,'2015-12-01'),(18,'ET100',NULL,'K',170,30,'2015-12-29'),(19,'ET100',NULL,'M',190,220,'2016-01-01'),(20,'ET100',NULL,'K',170,50,'2016-01-28'),(21,'ET100',NULL,'M',170,220,'2016-02-01'),(22,'ET100',NULL,'K',185,25,'2016-02-28'),(23,'ET100',NULL,'M',180,205,'2016-03-01'),(24,'ET100',NULL,'K',195,10,'2016-03-28'),(25,'ET100',NULL,'M',290,300,'2016-04-01'),(26,'ET100',NULL,'K',280,20,'2016-04-28'),(27,'ET100',NULL,'M',330,350,'2016-05-01'),(28,'ET100',NULL,'K',310,40,'2016-05-28'),(29,'ET100',NULL,'M',220,260,'2016-06-01'),(30,'ET100',NULL,'K',230,30,'2016-06-28'),(31,'ET100',NULL,'M',220,250,'2016-07-01'),(32,'ET100',NULL,'K',235,25,'2016-07-28'),(33,'GT001',NULL,'M',20,20,'2015-12-01'),(34,'GT001',NULL,'K',15,5,'2015-12-29'),(35,'GT001',NULL,'M',17,22,'2016-01-01'),(36,'GT001',NULL,'K',18,4,'2016-01-28'),(37,'GT001',NULL,'M',18,22,'2016-02-01'),(38,'GT001',NULL,'K',20,2,'2016-02-28'),(39,'GT001',NULL,'M',22,24,'2016-03-01'),(40,'GT001',NULL,'K',18,6,'2016-03-28'),(41,'GT001',NULL,'M',19,25,'2016-04-01'),(42,'GT001',NULL,'K',22,3,'2016-04-28'),(43,'GT001',NULL,'M',23,26,'2016-05-01'),(44,'GT001',NULL,'K',24,2,'2016-05-28'),(45,'GT001',NULL,'M',20,22,'2016-06-01'),(46,'GT001',NULL,'K',20,2,'2016-06-28'),(47,'GT001',NULL,'M',24,26,'2016-07-01'),(48,'GT001',NULL,'K',22,4,'2016-07-28'),(49,'AK100',NULL,'M',290,330,'2016-08-01'),(50,'AK100',NULL,'K',290,40,'2016-08-28'),(51,'AK100',NULL,'M',280,320,'2016-09-01'),(52,'AK100',NULL,'K',300,20,'2016-09-28'),(53,'AK100',0004,'M',320,340,'2016-10-01'),(54,'AK100',0004,'K',295,45,'2016-10-28'),(55,'AK100',0003,'M',300,345,'2016-11-01'),(56,'AK100',0003,'K',285,60,'2016-11-28'),(57,'AK100',0002,'M',280,340,'2016-12-01'),(58,'AK100',0002,'K',310,30,'2016-12-28'),(59,'AK100',0001,'M',320,350,'2017-01-01'),(60,'AK100',0001,'K',320,30,'2017-01-28'),(61,'ET100',NULL,'M',210,235,'2016-08-01'),(62,'ET100',NULL,'K',230,5,'2016-08-28'),(63,'ET100',NULL,'M',240,245,'2016-09-01'),(64,'ET100',NULL,'K',230,15,'2016-09-28'),(65,'ET100',0004,'M',240,255,'2016-10-01'),(66,'ET100',0004,'K',225,30,'2016-10-28'),(67,'ET100',0003,'M',220,250,'2016-11-01'),(68,'ET100',0003,'K',230,20,'2016-11-28'),(69,'ET100',0002,'M',230,250,'2016-12-01'),(70,'ET100',0002,'K',235,15,'2016-12-28'),(71,'ET100',0001,'M',250,265,'2017-01-01'),(72,'ET100',0001,'K',240,25,'2017-01-28'),(73,'GT001',NULL,'M',24,28,'2016-08-01'),(74,'GT001',NULL,'K',22,6,'2016-08-28'),(75,'GT001',NULL,'M',20,26,'2016-09-01'),(76,'GT001',NULL,'K',21,5,'2016-09-28'),(77,'GT001',0004,'M',20,25,'2016-10-01'),(78,'GT001',0004,'K',20,5,'2016-10-28'),(79,'GT001',0003,'M',20,25,'2016-11-01'),(80,'GT001',0003,'K',22,3,'2016-11-28'),(81,'GT001',0002,'M',23,26,'2016-12-01'),(82,'GT001',0002,'K',23,3,'2016-12-28'),(83,'GT001',0001,'M',25,28,'2017-01-01'),(84,'GT001',0001,'K',24,4,'2017-01-28'),(85,'AK100',NULL,'M',309,339,'2017-02-01'),(86,'AK100',NULL,'K',319,20,'2017-02-28'),(87,'ET100',NULL,'M',223,248,'2017-02-01'),(88,'ET100',NULL,'K',225,23,'2017-02-28'),(89,'GT001',NULL,'M',22,26,'2017-02-01'),(90,'GT001',NULL,'K',25,1,'2017-02-28'),(91,'AK100',NULL,'M',320,340,'2017-03-01'),(92,'AK100',NULL,'K',310,30,'2017-03-28'),(93,'ET100',NULL,'M',217,240,'2017-03-01'),(94,'ET100',NULL,'K',230,23,'2017-03-28'),(95,'GT001',NULL,'M',26,27,'2017-03-01'),(96,'GT001',NULL,'K',24,3,'2017-03-28'),(97,'AK100',NULL,'M',294,324,'2017-04-20'),(98,'ET100',NULL,'M',203,239,'2017-04-20'),(99,'GT001',NULL,'M',23,26,'2017-04-20');
 /*!40000 ALTER TABLE `transaksi_bahan` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -224,7 +165,7 @@ CREATE TABLE `peramalan` (
   `status_pengadaan` enum('S','B') NOT NULL DEFAULT 'B',
   `terupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_peramalan`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -233,7 +174,7 @@ CREATE TABLE `peramalan` (
 
 LOCK TABLES `peramalan` WRITE;
 /*!40000 ALTER TABLE `peramalan` DISABLE KEYS */;
-INSERT INTO `peramalan` VALUES (0001,'2017-02-22','S','2017-02-22 05:47:17'),(0002,'2017-03-16','B','2017-03-16 12:07:14');
+INSERT INTO `peramalan` VALUES (0001,'2017-02-22','S','2017-02-22 05:47:17'),(0002,'2017-03-16','S','2017-04-20 13:29:23'),(0003,'2017-04-20','S','2017-04-20 13:48:18');
 /*!40000 ALTER TABLE `peramalan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -248,6 +189,7 @@ CREATE TABLE `detil_peramalan` (
   `kode_bahan` char(5) DEFAULT NULL,
   `id_peramalan` int(4) unsigned zerofill DEFAULT NULL,
   `jumlah` smallint(3) NOT NULL,
+  `sisa` smallint(3) NOT NULL,
   `total_pengadaan` smallint(5) NOT NULL DEFAULT '0',
   KEY `fk_dr_kode_bahan_odc` (`kode_bahan`),
   KEY `fk_dr_id_peramalan_odc` (`id_peramalan`),
@@ -262,8 +204,67 @@ CREATE TABLE `detil_peramalan` (
 
 LOCK TABLES `detil_peramalan` WRITE;
 /*!40000 ALTER TABLE `detil_peramalan` DISABLE KEYS */;
-INSERT INTO `detil_peramalan` VALUES ('AK100',0001,319,309),('ET100',0001,240,223),('GT001',0001,24,22),('AK100',0002,310,320),('ET100',0002,231,217),('GT001',0002,25,26);
+INSERT INTO `detil_peramalan` VALUES ('AK100',0001,319,30,309),('ET100',0001,240,25,223),('GT001',0001,24,4,22),('AK100',0002,310,20,320),('ET100',0002,231,23,217),('GT001',0002,25,1,26),('AK100',0003,311,30,294),('ET100',0003,230,36,203),('GT001',0003,24,3,23);
 /*!40000 ALTER TABLE `detil_peramalan` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `petugas`
+--
+
+DROP TABLE IF EXISTS `petugas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `petugas` (
+  `nip` varchar(10) NOT NULL,
+  `nama_depan` varchar(10) NOT NULL,
+  `nama_belakang` varchar(30) DEFAULT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `kontak` varchar(12) NOT NULL,
+  `kode_aktivasi` varchar(255) DEFAULT NULL,
+  `aktif` char(1) NOT NULL DEFAULT '0',
+  `online` char(1) NOT NULL DEFAULT '0',
+  `terupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `kode_la` char(5) DEFAULT NULL,
+  PRIMARY KEY (`nip`),
+  KEY `fk_kode_la_odn` (`kode_la`),
+  CONSTRAINT `fk_kode_la_odn` FOREIGN KEY (`kode_la`) REFERENCES `level_akses` (`kode_la`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `petugas`
+--
+
+LOCK TABLES `petugas` WRITE;
+/*!40000 ALTER TABLE `petugas` DISABLE KEYS */;
+INSERT INTO `petugas` VALUES ('0000000001','Akbar','Faisal','pfiestaparfum@gmail.com','c4ca4238a0b923820dcc509a6f75849b','081XXXXXXXX1',NULL,'1','0','2017-03-16 17:43:59','PRD'),('0000000002','Andrew','Lowa','mfiestaparfum@gmail.com','c4ca4238a0b923820dcc509a6f75849b','081XXXXXXXX2',NULL,'1','0','2017-03-16 17:44:36','MGR'),('0000000003','Jafar','Pager','jafarpager@gmail.com','c4ca4238a0b923820dcc509a6f75849b','081XXXXXXXX3',NULL,'1','0','2017-03-16 17:44:51','ADM'),('0000000004','Ken','Kinanti','sfiestaparfum@gmail.com','','080000000004',NULL,'0','0','2017-02-23 09:23:57','SUP');
+/*!40000 ALTER TABLE `petugas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `level_akses`
+--
+
+DROP TABLE IF EXISTS `level_akses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `level_akses` (
+  `kode_la` char(5) NOT NULL,
+  `nama_la` varchar(15) NOT NULL,
+  PRIMARY KEY (`kode_la`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `level_akses`
+--
+
+LOCK TABLES `level_akses` WRITE;
+/*!40000 ALTER TABLE `level_akses` DISABLE KEYS */;
+INSERT INTO `level_akses` VALUES ('ADM','Admin'),('MGR','Manajer'),('PRD','Produksi'),('SUP','Suplaier');
+/*!40000 ALTER TABLE `level_akses` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -508,14 +509,14 @@ BEGIN
         SELECT stok INTO pt_stok FROM bahan_mentah WHERE kode_bahan = ikode_bahan;
         IF (pc_status_pengadaan=1) THEN
             START TRANSACTION;
-            INSERT INTO detil_peramalan(kode_bahan,id_peramalan,jumlah,total_pengadaan) VALUES(ikode_bahan,pt_id_peramalan,ijumlah,(ijumlah-pt_stok)+isafty_stok);
+            INSERT INTO detil_peramalan(kode_bahan,id_peramalan,jumlah,sisa,total_pengadaan) VALUES(ikode_bahan,pt_id_peramalan,ijumlah,pt_stok,(ijumlah-pt_stok)+isafty_stok);
             UPDATE bahan_mentah SET stok_aman = isafty_stok WHERE kode_bahan = ikode_bahan;
             COMMIT;
         ELSE
             START TRANSACTION;
             INSERT INTO peramalan(tgl_peramalan) VALUES(now());
             SELECT id_peramalan INTO pt_id_peramalan FROM peramalan WHERE status_pengadaan = 'B';
-            INSERT INTO detil_peramalan(kode_bahan,id_peramalan,jumlah,total_pengadaan) VALUES(ikode_bahan,pt_id_peramalan,ijumlah,(ijumlah-pt_stok)+isafty_stok);
+            INSERT INTO detil_peramalan(kode_bahan,id_peramalan,jumlah,sisa,total_pengadaan) VALUES(ikode_bahan,pt_id_peramalan,ijumlah,pt_stok,(ijumlah-pt_stok)+isafty_stok);
             UPDATE bahan_mentah SET stok_aman = isafty_stok WHERE kode_bahan = ikode_bahan;
             COMMIT;
               END IF;
@@ -789,4 +790,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-17  0:46:31
+-- Dump completed on 2017-04-20 21:35:51

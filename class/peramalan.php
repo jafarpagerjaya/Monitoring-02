@@ -82,12 +82,6 @@
 		   		  array()
 			    );
 		  $DW = array(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9);
-		  $DE = array(
-				  array()
-			    );
-		  $DE = array(
-			      array()
-				);
 		  $DE2 = array(
 				  array()
 				 );
@@ -191,7 +185,7 @@
 	    public static function getDataPeramalanById($id_peramalan){
 	      global $db;
 	      $id_peramalan = $db->real_escape_string($id_peramalan);
-	      $query = "SELECT id_peramalan,DATE_FORMAT(tgl_peramalan,'%d/%m/%Y') tgl_peramalan,DATE_FORMAT(tgl_peramalan,'%b %Y') periode, 
+	      $query = "SELECT id_peramalan,DATE_FORMAT(tgl_peramalan,'%d/%m/%Y') tgl_peramalan,DATE_FORMAT(tgl_peramalan,'%b %Y') periode, DATE_FORMAT(SUBDATE(tgl_peramalan, INTERVAL 1 MONTH),'%b %Y') periode_kemarin, 
 	      				   CASE WHEN status_pengadaan = 'B' THEN 'Belum Dilakukan' ELSE 'Sudah Dilakukan' END status_pengadaan
 	      			FROM peramalan
 	      			WHERE id_peramalan = '$id_peramalan'";
@@ -209,7 +203,7 @@
 	    public function bacaDetilLaporanP($id_peramalan){
 	      global $db;
 	      $id_peramalan = $db->real_escape_string($id_peramalan);
-	      $stmt = $db->prepare("SELECT dp.kode_bahan,bm.nama_bahan,bm.stok,dp.jumlah,dp.total_pengadaan 
+	      $stmt = $db->prepare("SELECT dp.kode_bahan,bm.nama_bahan,dp.sisa as stok,dp.jumlah,dp.total_pengadaan 
 	      						FROM bahan_mentah bm JOIN detil_peramalan dp
 	      						ON(bm.kode_bahan = dp.kode_bahan)
 	      						WHERE dp.id_peramalan = ?");

@@ -129,6 +129,7 @@ $l_peramalan = $tree_laporan;
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
     <?php include_once '../footer.php'; ?>
+    <?php include_once '../control-sidebar.php'; ?>
     </div><!-- ./wrapper -->
 
   <!-- REQUIRED JS SCRIPTS -->
@@ -199,7 +200,7 @@ $l_peramalan = $tree_laporan;
         <!-- Modal content-->
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title"><span class="glyphicon glyphicon-exclamation-sign"></span> Laporan Peramalan <span class="pull-right"><?php echo 'Tanggal saat ini : '.date('d/m/Y'); ?></span></h4>
+            <h4 class="modal-title"><span class="glyphicon glyphicon-exclamation-sign"></span> Laporan Peramalan <span class="pull-right"><?php echo 'Tanggal ramal : '.$odp->tgl_peramalan; ?></span></h4>
           </div>
           <div class="callout callout-info" style="margin-bottom: 0!important;border-radius:0px;">
             <h4><i class="fa fa-info"></i> ID Peramalan : # <?php echo $odp->id_peramalan; ?></h4>
@@ -234,7 +235,7 @@ $l_peramalan = $tree_laporan;
                     <tr>
                       <th>Kode Bahan</th>
                       <th>Nama Bahan</th>
-                      <th>Stok Periode <?php echo $odp->periode; ?></th>
+                      <th>Stok Periode <?php echo $odp->periode_kemarin; ?></th>
                       <th>Jumlah Peramalan</th>
                       <th>Jumlah Pengadaan</th>
                     </tr>

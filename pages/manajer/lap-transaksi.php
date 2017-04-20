@@ -181,7 +181,7 @@ unset($_SESSION['statusLT']);
   <script type="text/javascript">
     $(function () {
       $("#transaksi").dataTable({
-        "order":[[3,"asc"]]
+        "order":[[5,"asc"]]
       });
     });
     $(document).ready(function(){
