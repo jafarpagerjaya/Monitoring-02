@@ -17,55 +17,6 @@
 	      $call->close();
 	      $db->close();
 	    }
-	    /*
-		public function ramalBahan($kode_bahan,$gol_keluar){
-		  global $db;
-	      $kode_bahan = $db->real_escape_string($kode_bahan);
-	      $gol_keluar = $db->real_escape_string($gol_keluar);
-	      $query = "SELECT SUM(jumlah) as jumlah
-	                FROM transaksi_bahan 
-	                WHERE jenis_transaksi = 'K' AND kode_bahan = '$kode_bahan' AND MONTH(tgl_transaksi) BETWEEN MONTH(DATE_SUB(NOW(), INTERVAL 6 MONTH)) AND MONTH(DATE_SUB(NOW(), INTERVAL 1 MONTH))
-	                GROUP BY date_format(tgl_transaksi,'%m %Y') 
-	                ORDER BY year(tgl_transaksi) ASC, month(tgl_transaksi) ASC";
-	      $retrive = $db->query($query);
-		  $jumlahForecast = array();
-		  $jumlahPenjualanAktual = array();
-		  $row = 1;
-		  $W   = 0;
-		  $max = 0;
-		  $sum = 0;
-		  
-		  if($gol_keluar=='H'){
-		  	$W = 0.1;
-		  }else if($gol_keluar=='M'){
-		  	$W = 0.2;
-		  }else{
-		  	$W = 0.3;
-		  }
-		  
-		  //$W = 0.25;
-		  while ($hasil = $retrive->fetch_assoc()) {
-		  	$jumlahPenjualanAktual[$row]=$hasil['jumlah'];
-		  	if($row==1){
-			  $jumlahForecast[$row] = $jumlahPenjualanAktual[1];
-			}else{
-			  $jumlahForecast[$row] = ($jumlahPenjualanAktual[$row-1]*$W)+((1-$W)*$jumlahForecast[$row-1]);
-			  $jumlahForecast[$row] = ROUND(($jumlahForecast[$row]),0,PHP_ROUND_HALF_UP);
-			}
-			if($jumlahPenjualanAktual[$row] > $max){
-			  $max = $jumlahPenjualanAktual[$row];
-			}
-			$sum = $sum + $jumlahPenjualanAktual[$row];
-			$row++;
-		  }
-		  $avg = $sum/($row-1);
-		  $avg = ROUND($avg,0,PHP_ROUND_HALF_UP);
-		  $sefty_stok = ($max-$avg)*1;
-		  $sefty_stok = ROUND($sefty_stok,0,PHP_ROUND_HALF_UP);
-		  $jumlah = ($jumlahForecast[6]*(1-$W))+($jumlahPenjualanAktual[6]*$W);
-		  $jumlah = ROUND($jumlah,0,PHP_ROUND_HALF_UP);
-		  return array($jumlah,$sefty_stok);
-		}*/
 		
 		public function ramalBahan($kode_bahan){
 		  global $db;
